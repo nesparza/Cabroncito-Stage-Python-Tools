@@ -52,6 +52,8 @@ def plotLS_all(data):
     mp.subplots_adjust(right = 0.75)
     mp.figtext(0.4,0.4,
                ('patch area = %.03g cm^2' % data['areaSampleSquareCentimeter']))
+    mp.axhline(color = 'k', linewidth = 2)
+    mp.axvline(color = 'k', linewidth = 2)
     mp.ylabel('Normal Pressure (kPa)')
     mp.xlabel('Shear Pressure (kPa)')
     mp.grid()
