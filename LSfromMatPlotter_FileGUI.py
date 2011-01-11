@@ -17,12 +17,15 @@ from tkFileDialog import askopenfilename
 root = Tkinter.Tk()	# initiliases the window system
 root.withdraw()
 # This portion asks the user for a file to parse
-file = askopenfilename(filetypes=[('Matlab Mat File','*.mat')],
-title='Select data file to process',parent = root)
+files = askopenfilename(filetypes=[('Matlab Mat File','*.mat')],
+                       title='Select data file to process',
+                       parent = root,
+                       multiple = True)
 root.destroy()	# window cleanup
 
-if file:
-    data = loadmat(file)
-    plotLS_all(data)
+if files:
+    for file in files:
+        data = loadmat(file)
+        plotLS_all(data,True)
 else:
     print 'No file provided'

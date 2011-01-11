@@ -9,7 +9,7 @@ by Matlab
 from numpy import squeeze, zeros
 import matplotlib.pyplot as mp		#import of plotting module
 
-def plotLS_all(data):
+def plotLS_all(data,mean = False):
     FxPulloffVectorKPa = data['FxPulloffVector']/data['areaSampleSquareCentimeter'] * 10
     FyPulloffVectorKPa = data['FyPulloffVector']/data['areaSampleSquareCentimeter'] * 10
     FzPulloffVectorKPa = data['FzPulloffVector']/data['areaSampleSquareCentimeter'] * 10
@@ -26,13 +26,21 @@ def plotLS_all(data):
     # This loop goes through all the data points and plots them in force space
     for i, depth in enumerate(squeeze(data['distancePreloadMicron'])):
     	for j, angle in enumerate(squeeze(data['anglePulloffDegree'])):
-    		for k in range(data['numTrials']):
-    			plotH[i][j], = mp.plot(-FyPulloffVectorKPa[i,j,k],
-                -FzPulloffVectorKPa[i,j,k],
+            if mean:
+                plotH[i][j], = mp.plot(-FyPulloffVectorKPa[i,j].mean(),
+                -FzPulloffVectorKPa[i,j].mean(),
                 markeredgecolor = color[i],
                 markeredgewidth = 1,
                 marker = shape[j],
                 markersize = 10, markerfacecolor = 'None')
+            else:
+                for k in range(data['numTrials']):
+        			plotH[i][j], = mp.plot(-FyPulloffVectorKPa[i,j,k],
+                    -FzPulloffVectorKPa[i,j,k],
+                    markeredgecolor = color[i],
+                    markeredgewidth = 1,
+                    marker = shape[j],
+                    markersize = 10, markerfacecolor = 'None')
     
     # These loops generate the legend information
     
@@ -56,6 +64,7 @@ def plotLS_all(data):
     mp.axvline(color = 'k', linewidth = 2)
     mp.ylabel('Normal Pressure (kPa)')
     mp.xlabel('Shear Pressure (kPa)')
+    mp.title('%s' % data['experimentName'][0])
     mp.grid()
     mp.draw()
     mp.show()
